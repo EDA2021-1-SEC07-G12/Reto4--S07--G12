@@ -1,5 +1,10 @@
 #ISIS1225 - Librerias de soporte
 
+Juan Andrés Bernal Gil
+
+Juan Esteban Lopez Ulloa
+
+
 Este proyecto contiene los Tipos abstractos de datos, estructuras de datos y algoritmos requeridos por el curso ISIS1225-Estructuras de Datos y Algoritmos
 
 -Lib
