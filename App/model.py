@@ -74,8 +74,9 @@ def addRoute(catalogo,route):
     return catalogo
 
 def addRouteConection(catalogo,route):
-    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"], route["distance_km"])
-    
+    edge= gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])
+    if edge is None:
+        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"], route["distance_km"])
     return catalogo
 # Funciones para creacion de datos
 

@@ -65,7 +65,7 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         datos = controller.loadData(catalog)
-        print(catalog["RouteGraphD"])
+        print(gr.numEdges(catalog["RouteGraphD"]))
         
     elif int(inputs[0]) == 2:
         pass
