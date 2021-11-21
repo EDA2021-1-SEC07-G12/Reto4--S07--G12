@@ -48,11 +48,16 @@ def newCatalog():
     aeropuertos y sus rutas dirigidas
     """
     catalogo = {
-                "AirportGraph":None
+                "RouteGraphD":None,
+                "Map":None,
+                "RouteGraphNoD":None
 
 
                 }
 
+    catalogo['Map'] = mp.newMap(numelements=3500,
+                                     maptype='PROBING',
+                                     comparefunction=None)
     catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=9000,
@@ -77,6 +82,24 @@ def addRouteConection(catalogo,route):
     edge= gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])
     if edge is None:
         gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"], route["distance_km"])
+    return catalogo
+
+
+def addRoutes(catalogo,ruta):
+    mapa=catalogo["Map"]
+    if not mp.contains(mapa,ruta["Departure"]):
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,ruta["Destination"])
+        mp.put(mapa, ruta["Departure"], lista)
+    else:
+        valor = mp.get(mapa,ruta["Departure"])["value"]
+        if not lt.isPresent(valor,ruta["Destination"]):
+            lt.addLast(valor,ruta["Destination"])
+        mp.put(mapa, ruta["Departure"], valor)
+    
+
+    grafoDir= addRoute(catalogo,ruta)
+    
     return catalogo
 # Funciones para creacion de datos
 
