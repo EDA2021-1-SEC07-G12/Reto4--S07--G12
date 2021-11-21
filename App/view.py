@@ -26,6 +26,15 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 
+from DISClib.ADT.graph import gr
+from DISClib.Algorithms.Graphs import scc
+from DISClib.Algorithms.Graphs import dijsktra as djk
+from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
+from DISClib.Algorithms.Sorting import shellsort as sa
+
+
 
 """
 La vista se encarga de la interacción con el usuario
@@ -56,7 +65,7 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         datos = controller.loadData(catalog)
-        print(catalog["AirportGraph"])
+        print(catalog["RouteGraphD"])
         
     elif int(inputs[0]) == 2:
         pass

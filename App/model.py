@@ -68,10 +68,15 @@ def newCatalog():
 # Funciones para agregar informacion al catalogo
 
 def addRoute(catalogo,route):
-    #if not gr.containsVertex(catalogo["AirportGraph"] , airport):
-   # gr.insertVertex(catalogo["AirportGraph"] , Route["Name"])
-   print(route)
-    #return None
+    
+    gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
+   
+    return catalogo
+
+def addRouteConection(catalogo,route):
+    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"], route["distance_km"])
+    
+    return catalogo
 # Funciones para creacion de datos
 
 # Funciones de consulta
