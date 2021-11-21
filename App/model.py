@@ -55,7 +55,7 @@ def newCatalog():
 
                 }
 
-    catalogo['Map'] = mp.newMap(numelements=3500,
+    catalogo['Map'] = mp.newMap(numelements=3800,
                                      maptype='PROBING',
                                      comparefunction=None)
     catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
@@ -78,12 +78,16 @@ def addRoute(catalogo,route):
    
     return catalogo
 
-def addRouteConection(catalogo,route):
-    edge= gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])
-    if edge is None:
-        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"], route["distance_km"])
+def hola(catalogo,route):
+    mapa=catalogo["Map"]
+    values=mp.keySet(mapa)
+    grafo= catalogo["RouteGraphD"]
+    for i in lt.iterator(values):
+        llave=mp.get(mapa,i)
+        for j in lt.iterator(llave["value"]):
+            if route["Departure"]==i and route["Destination"]==j:
+                gr.addEdge(grafo,i,j,route["distance_km"])
     return catalogo
-
 
 def addRoutes(catalogo,ruta):
     mapa=catalogo["Map"]
@@ -95,12 +99,16 @@ def addRoutes(catalogo,ruta):
         valor = mp.get(mapa,ruta["Departure"])["value"]
         if not lt.isPresent(valor,ruta["Destination"]):
             lt.addLast(valor,ruta["Destination"])
+            
         mp.put(mapa, ruta["Departure"], valor)
-    
 
-    grafoDir= addRoute(catalogo,ruta)
+
+    addRoute(catalogo,ruta)
+    
     
     return catalogo
+
+
 # Funciones para creacion de datos
 
 # Funciones de consulta

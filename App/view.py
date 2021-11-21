@@ -63,11 +63,15 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        contador=0
         print("Cargando información de los archivos ....")
         datos = controller.loadData(catalog)
-        for i  in lt.iterator(mp.valueSet(catalog["Map"])):
-           print(i)
-        print(catalog["RouteGraphD"])
+        print(gr.numEdges(catalog["RouteGraphD"]))
+       # for i  in lt.iterator(mp.keySet(catalog["Map"])):
+           #print(i)
+           #contador+=1
+        #print(contador)
+
 
     elif int(inputs[0]) == 2:
         pass
