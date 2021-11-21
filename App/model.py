@@ -26,6 +26,9 @@
 
 
 import config as cf
+from DISClib.ADT.graph import gr
+from DISClib.Algorithms.Graphs import scc
+from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
@@ -39,8 +42,35 @@ los mismos.
 
 # Construccion de modelos
 
+def newCatalog():
+    """ Inicializa el catalogo
+    Crea un grafo dirigido el cual tiene la totalidad de
+    aeropuertos y sus rutas dirigidas
+    """
+    catalogo = {
+                "AirportGraph":None
+
+
+                }
+
+    catalogo["AirportGraph"] = gr.newGraph(datastructure='ADJ_LIST',
+                                              directed=True,
+                                              size=14000,
+                                              comparefunction=compararUbicacion
+                                              )
+    catalogo["RouteGraph"] = gr.newGraph(datastructure='ADJ_LIST',
+                                              directed=False,
+                                              size=14000,
+                                              comparefunction=None
+                                              )                                        
+    return catalogo
+
 # Funciones para agregar informacion al catalogo
 
+def addAirport(catalogo,airport):
+    #if not gr.containsVertex(catalogo["AirportGraph"] , airport):
+    gr.insertVertex(catalogo["AirportGraph"] , airport)
+    return catalogo
 # Funciones para creacion de datos
 
 # Funciones de consulta
@@ -48,3 +78,9 @@ los mismos.
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
+
+def compararUbicacion(elemento1,elemento2):
+    if elemento1["latitude"]>=elemento2["latitude"]:
+        return True
+    else:
+        return False

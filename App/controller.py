@@ -28,7 +28,19 @@ import csv
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
+def initCatalog():
+    catalog= model.newCatalog()
+    return catalog
 
+
+def loadData(catalog):
+    loadAirport(catalog)
+
+def loadAirport(catalog):
+    airportFile = cf.data_dir + 'airports_full.csv'
+    input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
+    for Airport in input_file:
+        model.addAirport(catalog,Airport)
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos
