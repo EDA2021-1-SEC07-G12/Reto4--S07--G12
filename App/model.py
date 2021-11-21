@@ -53,12 +53,12 @@ def newCatalog():
 
                 }
 
-    catalogo["AirportGraph"] = gr.newGraph(datastructure='ADJ_LIST',
+    catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
-                                              size=14000,
-                                              comparefunction=compararUbicacion
+                                              size=9000,
+                                              comparefunction=None
                                               )
-    catalogo["RouteGraph"] = gr.newGraph(datastructure='ADJ_LIST',
+    catalogo["RouteGraphNoD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
                                               size=14000,
                                               comparefunction=None
@@ -67,10 +67,11 @@ def newCatalog():
 
 # Funciones para agregar informacion al catalogo
 
-def addAirport(catalogo,airport):
+def addRoute(catalogo,route):
     #if not gr.containsVertex(catalogo["AirportGraph"] , airport):
-    gr.insertVertex(catalogo["AirportGraph"] , airport)
-    return catalogo
+   # gr.insertVertex(catalogo["AirportGraph"] , Route["Name"])
+   print(route)
+    #return None
 # Funciones para creacion de datos
 
 # Funciones de consulta

@@ -37,10 +37,10 @@ def loadData(catalog):
     loadAirport(catalog)
 
 def loadAirport(catalog):
-    airportFile = cf.data_dir + 'airports_full.csv'
+    airportFile = cf.data_dir + 'routes_full.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
-        model.addAirport(catalog,Airport)
+        model.addRoute(catalog,Airport)
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos
