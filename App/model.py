@@ -73,21 +73,27 @@ def newCatalog():
 # Funciones para agregar informacion al catalogo
 
 def addRoute(catalogo,route):
-    
-    gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
+    if not gr.containsVertex(catalogo["RouteGraphD"], route["Departure"]):
+         gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
    
+    #gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
+    
+    if not gr.containsVertex(catalogo["RouteGraphD"], route["Destination"]):
+        gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
+    
+    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+  #  print(route["Departure"])
     return catalogo
-
-def hola(catalogo,route):
-    mapa=catalogo["Map"]
-    values=mp.keySet(mapa)
-    grafo= catalogo["RouteGraphD"]
-    for i in lt.iterator(values):
-        llave=mp.get(mapa,i)
-        for j in lt.iterator(llave["value"]):
-            if route["Departure"]==i and route["Destination"]==j:
-                gr.addEdge(grafo,i,j,route["distance_km"])
-    return catalogo
+def addRoute1(catalogo,route):
+    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Departure"]):
+         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
+   
+    #gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
+    
+    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Destination"]):
+        gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
+    
+    gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , route["distance_km"])
 
 def addRoutes(catalogo,ruta):
     mapa=catalogo["Map"]
@@ -108,6 +114,10 @@ def addRoutes(catalogo,ruta):
     
     return catalogo
 
+
+def addEdge(catalogo,route):
+    
+    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
 
 # Funciones para creacion de datos
 

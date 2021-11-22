@@ -42,8 +42,8 @@ def loadAirport(catalog):
     for Airport in input_file:
         
         model.addRoutes(catalog,Airport)
-        
-        model.hola(catalog,Airport)
+       # model.addEdge(catalog,Airport)
+      
     
         
 # Inicialización del Catálogo de libros
