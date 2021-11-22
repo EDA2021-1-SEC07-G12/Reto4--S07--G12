@@ -65,16 +65,11 @@ while True:
     if int(inputs[0]) == 1:
         contador=0
         print("Cargando información de los archivos ....")
-        datos = controller.loadData(catalog)
+        controller.loadData(catalog)
         print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
         print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
-
         print("Datos cargados correctamente")
-       # for i  in lt.iterator(mp.keySet(catalog["Map"])):
-           #print(i)
-           #contador+=1
-        #print(contador)
-
+       
 
     elif int(inputs[0]) == 2:
         pass
