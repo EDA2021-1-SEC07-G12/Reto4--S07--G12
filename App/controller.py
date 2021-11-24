@@ -57,8 +57,9 @@ def requerimiento1(catalog):
     r=model.req1(catalog)
     return r
 
-def requerimiento2(catalog, codigo1, codigo2):
-    r=model.req2(catalog, codigo1, codigo2)
-    return r
+def requerimiento3(catalog):
+    IATA1=input("Introduce codigo IATA 1: ")
+    IATA2=input("Introduce codigo IATA 2: ")
+    return model.req_3(catalog,IATA1,IATA2)
 
 

@@ -81,8 +81,7 @@ def addRoute(catalogo,route):
 
     if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])==None:
         gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
-        print(gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]))
-
+       
     return catalogo
 
 
@@ -130,11 +129,17 @@ def req1(catalogo):
     'toca hacer el grafo no dirigido para saber cuantos vertices estan interconectados'
     return resp
 
+def req_2(catalogo):
+    """
+    Calcula los componentes conectados del grafo
+    Se utiliza el algoritmo de Kosaraju
+    """
+    catalogo['components'] = scc.KosarajuSCC(catalogo['RouteGraphD'])
+    return scc.connectedComponents(catalogo['components'])
 
-def req2(catalogo, codigo1, codigo2):
-    recorrido=scc.KosarajuSCC(catalogo["RouteGraphD"])
-    return recorrido
-
+def req_3(catalogo ,IATA1,IATA2):
+    catalogo['components'] = scc.KosarajuSCC(catalogo['RouteGraphD'])
+    return scc.stronglyConnected(catalogo["RouteGraphD"], IATA1,IATA2)
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 

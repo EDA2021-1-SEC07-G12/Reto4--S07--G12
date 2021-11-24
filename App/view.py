@@ -72,14 +72,12 @@ while True:
        
 
     elif int(inputs[0]) == 2:
-        h= controller.requerimiento1(catalog)
-        print (h)
+        print(controller.requerimiento2(catalog))
 
 
     elif int(inputs[0]) == 3:
-        codigo1=input('Ingrese el codigo 1 que quiere consultar: ')
-        codigo2=input('Ingrese el codigo 2 que quiere consultar: ')
-        h= controller.requerimiento2(catalog, codigo1, codigo2)
+        
+        h= controller.requerimiento3(catalog)
         print (h)
 
     else:
