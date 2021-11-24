@@ -75,15 +75,17 @@ def newCatalog():
 def addRoute(catalogo,route):
     if not gr.containsVertex(catalogo["RouteGraphD"], route["Departure"]):
          gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
-   
-    #gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
     
     if not gr.containsVertex(catalogo["RouteGraphD"], route["Destination"]):
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
-    
-    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
-  #  print(route["Departure"])
+
+    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])==None:
+        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+        print(gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]))
+
     return catalogo
+
+
 def addRoute1(catalogo,route):
     if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Departure"]):
          gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
@@ -122,6 +124,17 @@ def addEdge(catalogo,route):
 # Funciones para creacion de datos
 
 # Funciones de consulta
+def req1(catalogo):
+    aeropuertos=gr.vertices(catalogo["RouteGraphD"])
+    resp=lt.size(aeropuertos)
+    'toca hacer el grafo no dirigido para saber cuantos vertices estan interconectados'
+    return resp
+
+
+def req2(catalogo, codigo1, codigo2):
+    recorrido=scc.KosarajuSCC(catalogo["RouteGraphD"])
+    return recorrido
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -132,3 +145,7 @@ def compararUbicacion(elemento1,elemento2):
         return True
     else:
         return False
+
+
+
+

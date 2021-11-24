@@ -53,3 +53,12 @@ def loadAirport(catalog):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def requerimiento1(catalog):
+    r=model.req1(catalog)
+    return r
+
+def requerimiento2(catalog, codigo1, codigo2):
+    r=model.req2(catalog, codigo1, codigo2)
+    return r
+
+
