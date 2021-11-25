@@ -42,6 +42,7 @@ def loadAirport(catalog):
     for Airport in input_file:
         
         model.addRoutes(catalog,Airport)
+        model.addRoute1(catalog,Airport)
        # model.addEdge(catalog,Airport)
       
     
@@ -54,8 +55,8 @@ def loadAirport(catalog):
 
 # Funciones de consulta sobre el catálogo
 def requerimiento1(catalog):
-    r=model.req1(catalog)
-    return r
+    
+    return model.req_1(catalog)
 
 def requerimiento3(catalog):
     IATA1=input("Introduce codigo IATA 1: ")

@@ -66,13 +66,13 @@ while True:
         contador=0
         print("Cargando información de los archivos ....")
         controller.loadData(catalog)
-        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
-        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
+        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
+        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphNoD"])))
         print("Datos cargados correctamente")
        
 
     elif int(inputs[0]) == 2:
-        print(controller.requerimiento2(catalog))
+        print(controller.requerimiento1(catalog))
 
 
     elif int(inputs[0]) == 3:
