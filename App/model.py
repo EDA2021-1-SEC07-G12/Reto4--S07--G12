@@ -29,6 +29,8 @@ import config as cf
 from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
+from DISClib.Algorithms.Graphs import prim as pr
+from DISClib.Algorithms.Graphs import bellmanford as bf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
@@ -55,12 +57,12 @@ def newCatalog():
 
                 }
 
-    catalogo['Map'] = mp.newMap(numelements=3800,
+    catalogo['Map'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
     catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
-                                              size=9000,
+                                              size=3971,
                                               comparefunction=None
                                               )
     catalogo["RouteGraphNoD"] = gr.newGraph(datastructure='ADJ_LIST',
@@ -74,13 +76,14 @@ def newCatalog():
 
 def addRoute(catalogo,route):
     if not gr.containsVertex(catalogo["RouteGraphD"], route["Departure"]):
-         gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
+        gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
     
     if not gr.containsVertex(catalogo["RouteGraphD"], route["Destination"]):
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
 
-    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"])==None:
-        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+    #if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
+        #gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+        
        
     return catalogo
 
@@ -92,7 +95,7 @@ def addRoute1(catalogo,route):
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
         if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"])==None:
-            gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , route["distance_km"])
+            gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , int(route["distance_km"]))
     
     return catalogo
 def addRoutes(catalogo,ruta):
@@ -109,7 +112,7 @@ def addRoutes(catalogo,ruta):
         mp.put(mapa, ruta["Departure"], valor)
 
 
-    addRoute(catalogo,ruta)
+    
     
     
     return catalogo
@@ -117,8 +120,10 @@ def addRoutes(catalogo,ruta):
 
 def addEdge(catalogo,route):
     
-    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
-
+    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
+        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+    
+    return catalogo
 # Funciones para creacion de datos
 
 # Funciones de consulta
@@ -132,9 +137,30 @@ def req_1(catalogo):
     
     return scc.connectedComponents(scc.KosarajuSCC(catalogo['RouteGraphD']))
 
-def req_3(catalogo ,IATA1,IATA2):
+def req_2(catalogo ,IATA1,IATA2):
     catalogo['components'] = scc.KosarajuSCC(catalogo['RouteGraphD'])
-    return scc.stronglyConnected(catalogo["RouteGraphD"], IATA1,IATA2)
+
+    return scc.stronglyConnected(catalogo["components"], IATA1,IATA2)
+
+def connectedComponents(analyzer):
+    """
+    Calcula los componentes conectados del grafo
+    Se utiliza el algoritmo de Kosaraju
+    """
+    Variable=  scc.KosarajuSCC(analyzer['RouteGraphD'])
+    return scc.connectedComponents(Variable)
+
+def req_3(catalogo, origen,destino):
+    pr.PrimMST(catalogo['RouteGraphD'])
+    return pr.PrimMST(catalogo['RouteGraphD'])
+
+
+def req_4(catalogo,millas):
+    km=millas*1.6
+
+
+def req_5(catalogo,IATA):
+    return gr.degree(catalogo["RouteGraphD"],IATA)
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 

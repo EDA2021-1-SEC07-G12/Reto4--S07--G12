@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from typing_extensions import final
 import config as cf
 import model
 import csv
@@ -41,9 +42,9 @@ def loadAirport(catalog):
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
         
-        model.addRoutes(catalog,Airport)
-        model.addRoute1(catalog,Airport)
-       # model.addEdge(catalog,Airport)
+        model.addRoute(catalog,Airport)
+       # model.addRoute1(catalog,Airport)
+        model.addEdge(catalog,Airport)
       
     
         
@@ -58,9 +59,25 @@ def requerimiento1(catalog):
     
     return model.req_1(catalog)
 
-def requerimiento3(catalog):
+def requerimiento2(catalog):
     IATA1=input("Introduce codigo IATA 1: ")
     IATA2=input("Introduce codigo IATA 2: ")
-    return model.req_3(catalog,IATA1,IATA2)
+     
+    return model.req_2(catalog,IATA1,IATA2)
+
+def requerimiento3(catalog):
+    origen=input("Introduce ciudad de origen: ")
+    final=input("Introduce ciudad de destino: ")
+     
+    return model.req_3(catalog,origen,final)
 
 
+
+def req_5(catalog):
+    iata=input("Inserte aeropuerto afectado ")
+    return model.req_5(catalog,iata)
+def connectedComponents(analyzer):
+    """
+    Numero de componentes fuertemente conectados
+    """
+    return model.req_1(analyzer)

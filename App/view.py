@@ -34,7 +34,7 @@ from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 
-
+sys.setrecursionlimit(sys.getrecursionlimit()*100)
 
 """
 La vista se encarga de la interacción con el usuario
@@ -66,20 +66,33 @@ while True:
         contador=0
         print("Cargando información de los archivos ....")
         controller.loadData(catalog)
-        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
-        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphNoD"])))
+        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
+        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
         print("Datos cargados correctamente")
        
 
     elif int(inputs[0]) == 2:
-        print(controller.requerimiento1(catalog))
+        # Funcionesfor i in lt.iterator(gr.edges(catalog["RouteGraphD"])):
+        #print(catalog['RouteGraphD'])
+        #print(djk.Dijkstra(catalog['RouteGraphD'], "AER"))
+        print('El número de componentes conectados es: ' +
+        str(controller.connectedComponents(catalog)))
 
 
     elif int(inputs[0]) == 3:
         
+        h= controller.requerimiento2(catalog)
+        print (h)
+    elif int(inputs[0]) == 4:
+        
         h= controller.requerimiento3(catalog)
         print (h)
 
+
+    elif int(inputs[0]) == 6:
+        
+        h= controller.req_5(catalog)
+        print (h)
     else:
         sys.exit(0)
 sys.exit(0)
