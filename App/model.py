@@ -67,7 +67,7 @@ def newCatalog():
                                               )
     catalogo["RouteGraphNoD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
-                                              size=14000,
+                                              size=3971,
                                               comparefunction=None
                                               )                                        
     return catalogo
@@ -89,13 +89,11 @@ def addRoute(catalogo,route):
 
 
 def addRoute1(catalogo,route):
-    valor= mp.get(catalogo["Map"], route["Departure"])
-    valor1= mp.get(catalogo["Map"], route["Destination"])
-    if lt.isPresent(valor["value"], route["Destination"]) and lt.isPresent(valor1["value"], route["Departure"]):
+    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Departure"]):
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
+    
+    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Destination"]):
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
-        if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"])==None:
-            gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , int(route["distance_km"]))
     
     return catalogo
 def addRoutes(catalogo,ruta):
@@ -118,10 +116,17 @@ def addRoutes(catalogo,ruta):
     return catalogo
 
 
+def addEdge1(catalogo,route):
+    
+    if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"]) == None:
+        gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
+    
+    return catalogo
+
 def addEdge(catalogo,route):
     
     if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
-        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
+        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
     
     return catalogo
 # Funciones para creacion de datos
@@ -150,11 +155,16 @@ def connectedComponents(analyzer):
     Variable=  scc.KosarajuSCC(analyzer['RouteGraphD'])
     return scc.connectedComponents(Variable)
 
-def req_3(catalogo, origen,destino):
-    pr.PrimMST(catalogo['RouteGraphD'])
-    return pr.PrimMST(catalogo['RouteGraphD'])
+def req_3(catalogo, IATA1,IATA2):
+    """
+    Calcula los caminos de costo mínimo desde la estacion initialStation
+    a todos los demas vertices del grafo
+    """
+    catalogo['paths'] = djk.Dijkstra(catalogo['RouteGraphNoD'], IATA1)
 
+    return djk.pathTo(catalogo['paths'], IATA2)
 
+    
 def req_4(catalogo,millas):
     km=millas*1.6
 

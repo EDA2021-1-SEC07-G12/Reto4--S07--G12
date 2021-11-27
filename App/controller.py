@@ -43,7 +43,8 @@ def loadAirport(catalog):
     for Airport in input_file:
         
         model.addRoute(catalog,Airport)
-       # model.addRoute1(catalog,Airport)
+        model.addRoute1(catalog,Airport)
+        model.addEdge1(catalog,Airport)
         model.addEdge(catalog,Airport)
       
     
