@@ -23,7 +23,7 @@
  *
  * Dario Correal - Version inicial
  """
-
+import time
 
 import config as cf
 from DISClib.ADT.graph import gr
@@ -60,6 +60,10 @@ def newCatalog():
     catalogo['Map'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
+
+    catalogo['MapAirports'] = mp.newMap(numelements=3971,
+                                     maptype='PROBING',
+                                     comparefunction=None)
     catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=3971,
@@ -87,7 +91,6 @@ def addRoute(catalogo,route):
        
     return catalogo
 
-
 def addRoute1(catalogo,route):
     if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Departure"]):
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
@@ -96,21 +99,8 @@ def addRoute1(catalogo,route):
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
     
     return catalogo
-def addRoutes(catalogo,ruta):
-    mapa=catalogo["Map"]
-    if not mp.contains(mapa,ruta["Departure"]):
-        lista=lt.newList("ARRAY_LIST")
-        lt.addLast(lista,ruta["Destination"])
-        mp.put(mapa, ruta["Departure"], lista)
-    else:
-        valor = mp.get(mapa,ruta["Departure"])["value"]
-        if not lt.isPresent(valor,ruta["Destination"]):
-            lt.addLast(valor,ruta["Destination"])
-            
-        mp.put(mapa, ruta["Departure"], valor)
 
 
-    
     
     
     return catalogo
@@ -128,6 +118,16 @@ def addEdge(catalogo,route):
     if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
         gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
     
+    return catalogo
+
+def addCity(catalogo,city):
+    mapa=catalogo["Map"]
+    mp.put(mapa, city["city"], city)
+    return catalogo
+
+def addAirport(catalogo,Airport):
+    mapa=catalogo["MapAirports"]
+    mp.put(mapa, Airport["Name"], Airport)
     return catalogo
 # Funciones para creacion de datos
 
@@ -155,16 +155,20 @@ def connectedComponents(analyzer):
     Variable=  scc.KosarajuSCC(analyzer['RouteGraphD'])
     return scc.connectedComponents(Variable)
 
-def req_3(catalogo, IATA1,IATA2):
+def req_3(catalogo, Ciudad1,Ciudad2):
     """
     Calcula los caminos de costo mínimo desde la estacion initialStation
     a todos los demas vertices del grafo
     """
-    catalogo['paths'] = djk.Dijkstra(catalogo['RouteGraphNoD'], IATA1)
-
-    return djk.pathTo(catalogo['paths'], IATA2)
-
     
+    mapaCiudad=catalogo["Map"]
+    ciudad1=mp.get(mapaCiudad,Ciudad1)["value"]
+    ciudad2=mp.get(mapaCiudad,Ciudad2)['value']
+    tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
+    tupla2=(float(ciudad2["lat"]) , float(ciudad2["lng"]))
+    
+    print(DiferenciaDistancia(catalogo,tupla1))
+    print(DiferenciaDistancia(catalogo,tupla2))
 def req_4(catalogo,millas):
     km=millas*1.6
 
@@ -174,6 +178,26 @@ def req_5(catalogo,IATA):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
+
+def DiferenciaDistancia(catalogo,tupla):
+    mapa=catalogo["MapAirports"]
+    bck=(11111111111111110,11111111111111111110)
+    IATA=""
+    for i in lt.iterator(mp.keySet(mapa)): 
+        valor= mp.get(mapa,i)["value"]
+        lat=abs(float(valor["Latitude"])- tupla[0])
+        lng=abs(float(valor["Longitude"]) - tupla[1])
+        #bck=(lat,lng)
+        #Aeropuerto= valor["Name"]
+        if lat<bck[0] and lng<bck[1]:
+            bck=(lat,lng)
+            Aeropuerto = valor["Name"]
+            IATA=valor["IATA"]
+        #print(valor)
+    lista=lt.newList("ARRAY_LIST")
+    lt.addLast(lista,Aeropuerto)
+    lt.addLast(lista,IATA)
+    return lista
 # Funciones de ordenamiento
 
 def compararUbicacion(elemento1,elemento2):

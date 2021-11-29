@@ -93,6 +93,11 @@ while True:
         
         h= controller.req_5(catalog)
         print (h)
+
+    elif int(inputs[0]) == 7:
+       # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
+           # print(i)
+        print(catalog["MapAirports"])
     else:
         sys.exit(0)
 sys.exit(0)

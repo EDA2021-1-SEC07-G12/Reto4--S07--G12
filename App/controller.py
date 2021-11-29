@@ -20,7 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
-from typing_extensions import final
+#from typing_extensions import final
 import config as cf
 import model
 import csv
@@ -35,9 +35,10 @@ def initCatalog():
 
 
 def loadData(catalog):
-    loadAirport(catalog)
-
-def loadAirport(catalog):
+   # loadAirport(catalog)
+    LoadCity(catalog)
+    LoadAirports(catalog)
+def loadRoutes(catalog):
     airportFile = cf.data_dir + 'routes_full.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
@@ -47,8 +48,18 @@ def loadAirport(catalog):
         model.addEdge1(catalog,Airport)
         model.addEdge(catalog,Airport)
       
-    
+def LoadCity(catalog):
+    airportFile = cf.data_dir + 'worldcities.csv'
+    input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
+    for City in input_file:
         
+        model.addCity(catalog,City)
+def LoadAirports(catalog):
+    airportFile = cf.data_dir + 'airports_full.csv'
+    input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
+    for Airport in input_file:
+        
+        model.addAirport(catalog,Airport)   
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos
