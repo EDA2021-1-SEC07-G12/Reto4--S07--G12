@@ -167,8 +167,20 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
     tupla2=(float(ciudad2["lat"]) , float(ciudad2["lng"]))
     
-    print(DiferenciaDistancia(catalogo,tupla1))
-    print(DiferenciaDistancia(catalogo,tupla2))
+    llave1= DiferenciaDistancia(catalogo,tupla1)
+    IATA1=lt.getElement(llave1,2)
+    print(llave1)
+    print(IATA1)
+    print(gr.containsVertex(catalogo["RouteGraphD"], IATA1))
+
+    llave2=DiferenciaDistancia(catalogo,tupla2)
+    print(llave2)
+    IATA2=lt.getElement(llave2,2)
+    print(IATA2)
+    print(gr.containsVertex(catalogo["RouteGraphD"], IATA2))
+    dijsktra=djk.Dijkstra(catalogo["RouteGraphD"], IATA1)
+    #return dijsktra
+    return djk.pathTo(dijsktra,IATA2)
 def req_4(catalogo,millas):
     km=millas*1.6
 
@@ -189,7 +201,7 @@ def DiferenciaDistancia(catalogo,tupla):
         lng=abs(float(valor["Longitude"]) - tupla[1])
         #bck=(lat,lng)
         #Aeropuerto= valor["Name"]
-        if lat<bck[0] and lng<bck[1]:
+        if lat<bck[0] and lng<bck[1] and gr.containsVertex(catalogo["RouteGraphD"], valor["IATA"]):
             bck=(lat,lng)
             Aeropuerto = valor["Name"]
             IATA=valor["IATA"]

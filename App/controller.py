@@ -35,7 +35,7 @@ def initCatalog():
 
 
 def loadData(catalog):
-   # loadAirport(catalog)
+    loadRoutes(catalog)
     LoadCity(catalog)
     LoadAirports(catalog)
 def loadRoutes(catalog):
