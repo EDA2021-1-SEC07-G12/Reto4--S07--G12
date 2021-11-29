@@ -193,7 +193,7 @@ def req_5(catalogo,IATA):
 
 def DiferenciaDistancia(catalogo,tupla):
     mapa=catalogo["MapAirports"]
-    bck=(11111111111111110,1111111111111111111110)
+    
     valor1=111111111111111111111110
     for i in lt.iterator(mp.keySet(mapa)): 
         valor= mp.get(mapa,i)["value"]
