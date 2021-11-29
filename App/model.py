@@ -24,7 +24,7 @@
  * Dario Correal - Version inicial
  """
 import time
-
+from math import *
 import config as cf
 from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
@@ -174,12 +174,12 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     print(gr.containsVertex(catalogo["RouteGraphD"], IATA1))
 
     llave2=DiferenciaDistancia(catalogo,tupla2)
-    print(llave2)
+    
     IATA2=lt.getElement(llave2,2)
-    print(IATA2)
-    print(gr.containsVertex(catalogo["RouteGraphD"], IATA2))
+    
+    
     dijsktra=djk.Dijkstra(catalogo["RouteGraphD"], IATA1)
-    #return dijsktra
+    
     return djk.pathTo(dijsktra,IATA2)
 def req_4(catalogo,millas):
     km=millas*1.6
@@ -193,23 +193,41 @@ def req_5(catalogo,IATA):
 
 def DiferenciaDistancia(catalogo,tupla):
     mapa=catalogo["MapAirports"]
-    bck=(11111111111111110,11111111111111111110)
-    IATA=""
+    bck=(11111111111111110,1111111111111111111110)
+    valor1=111111111111111111111110
     for i in lt.iterator(mp.keySet(mapa)): 
         valor= mp.get(mapa,i)["value"]
-        lat=abs(float(valor["Latitude"])- tupla[0])
-        lng=abs(float(valor["Longitude"]) - tupla[1])
-        #bck=(lat,lng)
-        #Aeropuerto= valor["Name"]
-        if lat<bck[0] and lng<bck[1] and gr.containsVertex(catalogo["RouteGraphD"], valor["IATA"]):
-            bck=(lat,lng)
+        diferencia= DiferenciaDistancia1(tupla[0], tupla[1], float(valor["Latitude"]), float(valor["Longitude"]) )
+        
+        if diferencia<valor1 and gr.containsVertex(catalogo["RouteGraphD"], valor["IATA"]):
+            valor1=diferencia
             Aeropuerto = valor["Name"]
             IATA=valor["IATA"]
-        #print(valor)
+        
     lista=lt.newList("ARRAY_LIST")
+    print(Aeropuerto)
     lt.addLast(lista,Aeropuerto)
     lt.addLast(lista,IATA)
     return lista
+
+def DiferenciaDistancia1(lat1,lon1,lat2,lon2):
+    Aaltitude = 2000
+    Oppsite  = 20000
+
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    Base = 6371 * c
+    Bearing =atan2(cos(lat1)*sin(lat2)-sin(lat1)*cos(lat2)*cos(lon2-lon1), sin(lon2-lon1)*cos(lat2)) 
+
+    Bearing = degrees(Bearing)
+    Base2 = Base * 1000
+    distance = Base * 2 + Oppsite * 2 / 2
+    Caltitude = Oppsite - Aaltitude
+    return distance/1000
 # Funciones de ordenamiento
 
 def compararUbicacion(elemento1,elemento2):

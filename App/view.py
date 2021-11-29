@@ -25,7 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+import time
 from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
@@ -84,11 +84,13 @@ while True:
         h= controller.requerimiento2(catalog)
         print (h)
     elif int(inputs[0]) == 4:
-        
+        start_time = time.process_time()
         h= controller.requerimiento3(catalog)
-        print (h)
-
-
+        for i in lt.iterator(h):
+            print(i)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print(elapsed_time_mseg)
     elif int(inputs[0]) == 6:
         
         h= controller.req_5(catalog)
