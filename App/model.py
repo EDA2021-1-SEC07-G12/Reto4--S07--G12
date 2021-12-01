@@ -181,9 +181,25 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     dijsktra=djk.Dijkstra(catalogo["RouteGraphD"], IATA1)
     
     return djk.pathTo(dijsktra,IATA2)
-def req_4(catalogo,millas):
+def req_4(catalogo,millas,inicio):
     km=millas*1.6
-
+    grafo= catalogo["RouteGraphD"]
+    dijsktra = djk.Dijkstra(grafo, inicio)
+    camino1=0
+    distancia=11111110
+    distancia1=0
+    for i in lt.iterator(gr.vertices(grafo)):
+        if djk.hasPathTo(dijsktra, i):
+            camino= lt.size(djk.pathTo(dijsktra,i))
+            distancia= djk.distTo(dijsktra,i)
+            
+            if distancia<millas and camino>=camino1:
+                
+                camino1 = lt.size(djk.pathTo(dijsktra,i))
+                distancia1= djk.distTo(dijsktra,i)
+    print(distancia<km)
+    print(camino>=camino1)
+    return (distancia1, camino1)
 
 def req_5(catalogo,IATA):
     return gr.degree(catalogo["RouteGraphD"],IATA)

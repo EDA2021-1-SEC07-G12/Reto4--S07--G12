@@ -93,7 +93,7 @@ while True:
         print(elapsed_time_mseg)
     elif int(inputs[0]) == 6:
         
-        h= controller.req_5(catalog)
+        h= controller.req4(catalog)
         print (h)
 
     elif int(inputs[0]) == 7:

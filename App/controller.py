@@ -84,7 +84,10 @@ def requerimiento3(catalog):
     return model.req_3(catalog,origen,final)
 
 
-
+def req4(catalog):
+    origen=input("Introduce ciudad de origen: ")
+    millas=int(input("Inserte cantidad de millas disponibles "))
+    return model.req_4(catalog,millas,origen)
 def req_5(catalog):
     iata=input("Inserte aeropuerto afectado ")
     return model.req_5(catalog,iata)
