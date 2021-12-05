@@ -66,10 +66,17 @@ while True:
         contador=0
         print("Cargando información de los archivos ....")
         controller.loadData(catalog)
-        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
         print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
-        print("Datos cargados correctamente")
-       
+        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
+        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphNoD"])))
+        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
+        print("El numero de Aeropuertos cargados es " + str(mp.size(catalog["MapAirports"])))
+
+        aas=catalog["RouteGraphD"]
+        kosaraju= scc.KosarajuSCC(aas)
+        print(gr.degree(catalog["RouteGraphD"], "LIS"))
+        #print("Datos cargados correctamente")
+        #print(catalog["MapAirports"])
 
     elif int(inputs[0]) == 2:
         # Funcionesfor i in lt.iterator(gr.edges(catalog["RouteGraphD"])):

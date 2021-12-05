@@ -64,6 +64,9 @@ def newCatalog():
     catalogo['MapAirports'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
+    catalogo['MapAirportsIATA'] = mp.newMap(numelements=3971,
+                                     maptype='PROBING',
+                                     comparefunction=None)
     catalogo["RouteGraphD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=3971,
@@ -71,7 +74,7 @@ def newCatalog():
                                               )
     catalogo["RouteGraphNoD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
-                                              size=3971,
+                                              size=5,
                                               comparefunction=None
                                               )                                        
     return catalogo
@@ -79,55 +82,32 @@ def newCatalog():
 # Funciones para agregar informacion al catalogo
 
 def addRoute(catalogo,route):
-    if not gr.containsVertex(catalogo["RouteGraphD"], route["Departure"]):
+    if gr.containsVertex(catalogo["RouteGraphD"] , route["Departure"]) ==False:
         gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
-    
-    if not gr.containsVertex(catalogo["RouteGraphD"], route["Destination"]):
+    if gr.containsVertex(catalogo["RouteGraphD"] , route["Destination"]) ==False:
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
-
-    #if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
-        #gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , route["distance_km"])
-        
-       
+    
+    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) is None:
+       gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
     return catalogo
 
 def addRoute1(catalogo,route):
-    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Departure"]):
+    if gr.containsVertex(catalogo["RouteGraphNoD"] , route["Departure"]) ==False:
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
-    
-    if not gr.containsVertex(catalogo["RouteGraphNoD"], route["Destination"]):
+    if gr.containsVertex(catalogo["RouteGraphNoD"] , route["Destination"]) ==False:
         gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
-    
-    return catalogo
-
-
-    
-    
-    return catalogo
-
-
-def addEdge1(catalogo,route):
-    
-    if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"]) == None:
+    if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"]) is None:
         gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
-    
-    return catalogo
-
-def addEdge(catalogo,route):
-    
-    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) == None:
-        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
-    
-    return catalogo
-
-def addCity(catalogo,city):
-    mapa=catalogo["Map"]
-    mp.put(mapa, city["city"], city)
     return catalogo
 
 def addAirport(catalogo,Airport):
     mapa=catalogo["MapAirports"]
     mp.put(mapa, Airport["Name"], Airport)
+    return catalogo
+
+def addAirportsIATA(catalogo,Airport):
+    mapa=catalogo["MapAirportsIATA"]
+    mp.put(mapa, Airport["IATA"], Airport)
     return catalogo
 # Funciones para creacion de datos
 

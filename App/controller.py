@@ -36,30 +36,30 @@ def initCatalog():
 
 def loadData(catalog):
     loadRoutes(catalog)
-    LoadCity(catalog)
+    
     LoadAirports(catalog)
 def loadRoutes(catalog):
-    airportFile = cf.data_dir + 'routes_full.csv'
+    airportFile = cf.data_dir + 'routes-utf8-small.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
         
         model.addRoute(catalog,Airport)
         model.addRoute1(catalog,Airport)
-        model.addEdge1(catalog,Airport)
-        model.addEdge(catalog,Airport)
       
 def LoadCity(catalog):
-    airportFile = cf.data_dir + 'worldcities.csv'
+    airportFile = cf.data_dir + 'worldcities-utf8.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for City in input_file:
         
         model.addCity(catalog,City)
 def LoadAirports(catalog):
-    airportFile = cf.data_dir + 'airports_full.csv'
+
+    airportFile = cf.data_dir + 'airports-utf8-small.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
         
         model.addAirport(catalog,Airport)   
+        model.addAirportsIATA(catalog,Airport)
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos
@@ -68,7 +68,6 @@ def LoadAirports(catalog):
 
 # Funciones de consulta sobre el catálogo
 def requerimiento1(catalog):
-    
     return model.req_1(catalog)
 
 def requerimiento2(catalog):
@@ -86,9 +85,9 @@ def requerimiento3(catalog):
 
 def req4(catalog):
     origen=input("Introduce ciudad de origen: ")
-    millas=int(input("Inserte cantidad de millas disponibles "))
+    millas=int(input("Inserte cantidadde millas disponibles "))
     return model.req_4(catalog,millas,origen)
-def req_5(catalog):
+def req_5(catalog): 
     iata=input("Inserte aeropuerto afectado ")
     return model.req_5(catalog,iata)
 def connectedComponents(analyzer):
