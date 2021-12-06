@@ -82,9 +82,7 @@ while True:
         # Funcionesfor i in lt.iterator(gr.edges(catalog["RouteGraphD"])):
         #print(catalog['RouteGraphD'])
         #print(djk.Dijkstra(catalog['RouteGraphD'], "AER"))
-        print('El número de componentes conectados es: ' +
-        str(controller.connectedComponents(catalog)))
-
+        print(controller.requerimiento1(catalog))
 
     elif int(inputs[0]) == 3:
         
@@ -107,6 +105,11 @@ while True:
        # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
            # print(i)
         print(catalog["MapAirports"])
+
+    elif int(inputs[0]) == 8:
+           # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
+           # print(i)
+        print(catalog["City"])
     else:
         sys.exit(0)
 sys.exit(0)

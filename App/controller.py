@@ -36,7 +36,7 @@ def initCatalog():
 
 def loadData(catalog):
     loadRoutes(catalog)
-    
+    LoadCity(catalog)
     LoadAirports(catalog)
 def loadRoutes(catalog):
     airportFile = cf.data_dir + 'routes-utf8-small.csv'

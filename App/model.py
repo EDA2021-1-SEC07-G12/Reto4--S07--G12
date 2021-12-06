@@ -35,6 +35,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import selectionsort as sl
 assert cf
 
 """
@@ -64,6 +65,9 @@ def newCatalog():
     catalogo['MapAirports'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
+    catalogo['City'] = mp.newMap(numelements=3971,
+                                     maptype='PROBING',
+                                     comparefunction=None)
     catalogo['MapAirportsIATA'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
@@ -87,8 +91,8 @@ def addRoute(catalogo,route):
     if gr.containsVertex(catalogo["RouteGraphD"] , route["Destination"]) ==False:
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
     
-    if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) is None:
-       gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
+    #if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) is None:
+    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
     return catalogo
 
 def addRoute1(catalogo,route):
@@ -105,6 +109,10 @@ def addAirport(catalogo,Airport):
     mp.put(mapa, Airport["Name"], Airport)
     return catalogo
 
+def addCity(catalogo,City):
+    mapa=catalogo["City"]
+    mp.put(mapa, City["city"], City)
+    return catalogo
 def addAirportsIATA(catalogo,Airport):
     mapa=catalogo["MapAirportsIATA"]
     mp.put(mapa, Airport["IATA"], Airport)
@@ -115,17 +123,31 @@ def addAirportsIATA(catalogo,Airport):
 
 
 def req_1(catalogo):
-    """
-    Calcula los componentes conectados del grafo
-    Se utiliza el algoritmo de Kosaraju
-    """
-    
-    return scc.connectedComponents(scc.KosarajuSCC(catalogo['RouteGraphD']))
+    grafo= catalogo["RouteGraphD"]
+    lista=lt.newList("ARRAY_LIST")
+    mapa=mp.newMap(numelements=gr.numVertices(grafo),
+                                     maptype='PROBING',
+                                     comparefunction=None)
+    for i in lt.iterator(gr.vertices(grafo)):
+        adjacentes = gr.indegree(grafo,i)
+        adjacentes1 = gr.outdegree(grafo,i)
+        mp.put(mapa,i,adjacentes + adjacentes1)
+    for j in lt.iterator(gr.vertices(grafo)):
+        llave = mp.get(mapa,j)
+        lt.addLast(lista,llave)
+
+    lista = sa.sort(lista,adyacentes)
+    return lista
 
 def req_2(catalogo ,IATA1,IATA2):
     catalogo['components'] = scc.KosarajuSCC(catalogo['RouteGraphD'])
-
-    return scc.stronglyConnected(catalogo["components"], IATA1,IATA2)
+    contador=0
+    vertices = gr.vertices(catalogo['RouteGraphNoD'])
+    for i in lt.iterator(vertices):
+        for j in lt.iterator(vertices):
+            if scc.stronglyConnected(catalogo['components'], i, j):
+                contador+=1
+    return contador
 
 def connectedComponents(analyzer):
     """
@@ -141,7 +163,7 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     a todos los demas vertices del grafo
     """
     
-    mapaCiudad=catalogo["Map"]
+    mapaCiudad=catalogo["City"]
     ciudad1=mp.get(mapaCiudad,Ciudad1)["value"]
     ciudad2=mp.get(mapaCiudad,Ciudad2)['value']
     tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
@@ -233,5 +255,8 @@ def compararUbicacion(elemento1,elemento2):
         return False
 
 
-
-
+def adyacentes(elemento1,elemento2):
+    if elemento1["value"]>=elemento2["value"]:
+        return 1
+    else:
+        return 0
