@@ -66,22 +66,17 @@ while True:
         contador=0
         print("Cargando información de los archivos ....")
         controller.loadData(catalog)
-        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
-        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
+        controller.crearNoDirigido(catalog)
+        print(gr.numEdges(catalog["RouteGraphNoD"]))
+        print("El numero de vertices del digrafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
+        print("El numero de arcos del digrafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
         print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphNoD"])))
         print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
-        print("El numero de Aeropuertos cargados es " + str(mp.size(catalog["MapAirports"])))
+        print("El numero de Ciudades cargados es " + str(mp.size(catalog["City"])))
 
-        aas=catalog["RouteGraphD"]
-        kosaraju= scc.KosarajuSCC(aas)
-        print(gr.degree(catalog["RouteGraphD"], "LIS"))
-        #print("Datos cargados correctamente")
-        #print(catalog["MapAirports"])
-
+        
     elif int(inputs[0]) == 2:
-        # Funcionesfor i in lt.iterator(gr.edges(catalog["RouteGraphD"])):
-        #print(catalog['RouteGraphD'])
-        #print(djk.Dijkstra(catalog['RouteGraphD'], "AER"))
+        
         print(controller.requerimiento1(catalog))
 
     elif int(inputs[0]) == 3:
@@ -104,12 +99,10 @@ while True:
     elif int(inputs[0]) == 7:
        # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
            # print(i)
-        print(catalog["MapAirports"])
+        print("Hola")
 
     elif int(inputs[0]) == 8:
-           # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
-           # print(i)
-        print(catalog["City"])
+           print(controller.req_5(catalog))
     else:
         sys.exit(0)
 sys.exit(0)

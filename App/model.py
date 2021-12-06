@@ -33,6 +33,8 @@ from DISClib.Algorithms.Graphs import prim as pr
 from DISClib.Algorithms.Graphs import bellmanford as bf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
+
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Sorting import selectionsort as sl
@@ -90,19 +92,35 @@ def addRoute(catalogo,route):
         gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
     if gr.containsVertex(catalogo["RouteGraphD"] , route["Destination"]) ==False:
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
-    
-    #if gr.getEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"]) is None:
+    #if gr.getEdge(catalogo["RouteGraphD"] , route["Departure"] , route["Destination"]) is None:
     gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
+
+
+    """Agregar vertices a no dirigido"""
+
+    return catalogo
+    
+
+def CreateNoDir(catalogo):
+
+    grafodir=catalogo["RouteGraphD"]
+
+    for i in lt.iterator(gr.vertices(grafodir)):
+        adjacentes= gr.adjacents(grafodir,i)
+        for j in lt.iterator(adjacentes):
+            adjacentes1= gr.adjacents(grafodir,j)
+            if lt.isPresent(adjacentes1,i):
+                if gr.containsVertex(catalogo["RouteGraphNoD"] , i) ==False:
+                    gr.insertVertex(catalogo["RouteGraphNoD"], i)
+                if gr.containsVertex(catalogo["RouteGraphNoD"] , j) ==False:
+                    gr.insertVertex(catalogo["RouteGraphNoD"], j)
+                if gr.getEdge(catalogo["RouteGraphNoD"] , i , j)==None and gr.getEdge(catalogo["RouteGraphNoD"] , j , i)==None:
+                    gr.addEdge(catalogo["RouteGraphNoD"], i,j, gr.getEdge(catalogo["RouteGraphD"] , i , j)["weight"])
+
     return catalogo
 
-def addRoute1(catalogo,route):
-    if gr.containsVertex(catalogo["RouteGraphNoD"] , route["Departure"]) ==False:
-        gr.insertVertex(catalogo["RouteGraphNoD"] , route["Departure"])
-    if gr.containsVertex(catalogo["RouteGraphNoD"] , route["Destination"]) ==False:
-        gr.insertVertex(catalogo["RouteGraphNoD"] , route["Destination"])
-    if gr.getEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"]) is None:
-        gr.addEdge(catalogo["RouteGraphNoD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
-    return catalogo
+def AddRoute2(catalog,route):
+    gradoDir=catalog["RouteGraphD"]
 
 def addAirport(catalogo,Airport):
     mapa=catalogo["MapAirports"]
@@ -111,7 +129,11 @@ def addAirport(catalogo,Airport):
 
 def addCity(catalogo,City):
     mapa=catalogo["City"]
-    mp.put(mapa, City["city"], City)
+    
+    string=City["city_ascii"]+City["iso2"] + City["admin_name"]
+        
+    
+    mp.put(mapa, string, City)
     return catalogo
 def addAirportsIATA(catalogo,Airport):
     mapa=catalogo["MapAirportsIATA"]
@@ -140,14 +162,9 @@ def req_1(catalogo):
     return lista
 
 def req_2(catalogo ,IATA1,IATA2):
-    catalogo['components'] = scc.KosarajuSCC(catalogo['RouteGraphD'])
-    contador=0
-    vertices = gr.vertices(catalogo['RouteGraphNoD'])
-    for i in lt.iterator(vertices):
-        for j in lt.iterator(vertices):
-            if scc.stronglyConnected(catalogo['components'], i, j):
-                contador+=1
-    return contador
+    kosajaru = scc.KosarajuSCC(catalogo['RouteGraphD'])
+    
+    return scc.sccCount(catalogo["RouteGraphD"],kosajaru, IATA1 )
 
 def connectedComponents(analyzer):
     """
@@ -173,21 +190,28 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     IATA1=lt.getElement(llave1,2)
     print(llave1)
     print(IATA1)
-    print(gr.containsVertex(catalogo["RouteGraphD"], IATA1))
+    print(gr.containsVertex(catalogo["RouteGraphNoD"], IATA1))
 
     llave2=DiferenciaDistancia(catalogo,tupla2)
     
     IATA2=lt.getElement(llave2,2)
     
     
-    dijsktra=djk.Dijkstra(catalogo["RouteGraphD"], IATA1)
+    dijsktra=djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
     return djk.pathTo(dijsktra,IATA2)
 def req_4(catalogo,millas,inicio):
     km=millas*1.6
-    grafo= catalogo["RouteGraphD"]
-    dijsktra = djk.Dijkstra(grafo, inicio)
-    camino1=0
+    grafo= catalogo["RouteGraphNoD"]
+    vertices=gr.vertices(grafo)
+    dijsktra = pr.PrimMST(grafo)
+
+
+    #for i in lt.iterator(vertices):
+        #print(djk.distTo(dijsktra,i))
+        #print(djk.pathTo(dijsktra,))
+    print(dijsktra)
+    """camino1=0
     distancia=11111110
     distancia1=0
     for i in lt.iterator(gr.vertices(grafo)):
@@ -201,11 +225,18 @@ def req_4(catalogo,millas,inicio):
                 distancia1= djk.distTo(dijsktra,i)
     print(distancia<km)
     print(camino>=camino1)
-    return (distancia1, camino1)
+    return (distancia1, camino1)"""
 
 def req_5(catalogo,IATA):
-    return gr.degree(catalogo["RouteGraphD"],IATA)
-
+    digrafo=catalogo["RouteGraphD"]
+    grafo=catalogo["RouteGraphNoD"]
+    
+    numRoutes= gr.outdegree(digrafo,IATA) + gr.indegree(digrafo,IATA)
+    numRoutes1=gr.degree(grafo,IATA) 
+    arcos= gr.numEdges(digrafo) - numRoutes
+    arcos1=gr.numEdges(grafo)-numRoutes1
+    return arcos1
+    #print((gr.numVertices(catalogo["RouteGraphNoD"], gr.numEdges(catalogo["RouteGraphNoD"]))))
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 

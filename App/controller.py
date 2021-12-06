@@ -44,7 +44,7 @@ def loadRoutes(catalog):
     for Airport in input_file:
         
         model.addRoute(catalog,Airport)
-        model.addRoute1(catalog,Airport)
+        #model.addRoute1(catalog,Airport)
       
 def LoadCity(catalog):
     airportFile = cf.data_dir + 'worldcities-utf8.csv'
@@ -60,6 +60,9 @@ def LoadAirports(catalog):
         
         model.addAirport(catalog,Airport)   
         model.addAirportsIATA(catalog,Airport)
+
+def crearNoDirigido(catalog):
+    return model.CreateNoDir(catalog)
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos
