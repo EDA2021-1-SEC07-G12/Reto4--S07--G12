@@ -91,7 +91,7 @@ while True:
            variable=mp.get(catalog["MapAirportsIATA"],i["key"])
            variable1=variable["value"]
            print({"Nombre ":variable1["Name"]," Ciudad ":variable1["City"], "País": variable1["Country"], "IATA":variable1["IATA"], "Conexiones":i["value"],"Salidas":gr.outdegree(catalog["RouteGraphDAirlines"],i["key"]), "Entradas":gr.indegree(catalog["RouteGraphDAirlines"],i["key"])})
-        #print(mp.keySet(catalog["MapAirportsIATA"]))
+        
     elif int(inputs[0]) == 3:
         
         h= controller.requerimiento2(catalog)

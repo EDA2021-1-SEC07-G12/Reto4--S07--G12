@@ -101,7 +101,7 @@ def sccCount(graph, scc, vert):
         return scc
     except Exception as exp:
         error.reraise(exp, 'dfo:sccCount')
-
+    
 
 def stronglyConnected(scc, verta, vertb):
     """

@@ -174,9 +174,20 @@ def req_1(catalogo):
     return lt.subList(lista,1,5)
 
 def req_2(catalogo ,IATA1,IATA2):
-    kosajaru = scc.KosarajuSCC(catalogo['RouteGraphD'])
     
-    return scc.sccCount(catalogo["RouteGraphD"],kosajaru, IATA1 )
+    kosajaru =scc.KosarajuSCC(catalogo['RouteGraphD'])
+
+    strong = scc.connectedComponents(kosajaru)
+
+    conectados=scc.stronglyConnected(kosajaru,IATA1,IATA2)
+
+    retorno=lt.newList("ARRAY_LIST")
+    lt.addLast(retorno,strong)
+    lt.addLast(retorno,conectados)
+    return (strong,conectados)
+
+    return conectados
+    #return scc.sccCount(catalogo["RouteGraphD"],kosajaru, IATA1 )
 
 def connectedComponents(analyzer):
     """
@@ -219,10 +230,10 @@ def req_4(catalogo,millas,inicio):
     dijsktra = pr.PrimMST(grafo)
 
 
-    #for i in lt.iterator(vertices):
-        #print(djk.distTo(dijsktra,i))
-        #print(djk.pathTo(dijsktra,))
-    print(dijsktra)
+    for i in lt.iterator(vertices):
+        print(djk.distTo(dijsktra,i))
+        #"print(djk.pathTo(dijsktra,))
+    #print(dijsktra)
     """camino1=0
     distancia=11111110
     distancia1=0
@@ -242,7 +253,7 @@ def req_4(catalogo,millas,inicio):
 def req_5(catalogo,IATA):
     digrafo=catalogo["RouteGraphD"]
     grafo=catalogo["RouteGraphNoD"]
-    
+    print(lt.size(gr.adjacents(catalogo["RouteGraphD"], IATA)))
     numRoutes= gr.outdegree(digrafo,IATA) + gr.indegree(digrafo,IATA)
     numRoutes1=gr.degree(grafo,IATA) 
     arcos= gr.numEdges(digrafo) - numRoutes
