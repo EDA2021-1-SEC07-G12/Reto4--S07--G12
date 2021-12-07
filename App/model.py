@@ -78,6 +78,11 @@ def newCatalog():
                                               size=3971,
                                               comparefunction=None
                                               )
+    catalogo["RouteGraphDAirlines"] = gr.newGraph(datastructure='ADJ_LIST',
+                                              directed=True,
+                                              size=3971,
+                                              comparefunction=None
+                                              )
     catalogo["RouteGraphNoD"] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
                                               size=5,
@@ -92,8 +97,14 @@ def addRoute(catalogo,route):
         gr.insertVertex(catalogo["RouteGraphD"] , route["Departure"])
     if gr.containsVertex(catalogo["RouteGraphD"] , route["Destination"]) ==False:
         gr.insertVertex(catalogo["RouteGraphD"] , route["Destination"])
-    #if gr.getEdge(catalogo["RouteGraphD"] , route["Departure"] , route["Destination"]) is None:
-    gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
+
+    if gr.containsVertex(catalogo["RouteGraphDAirlines"] , route["Departure"]) ==False:
+        gr.insertVertex(catalogo["RouteGraphDAirlines"] , route["Departure"])
+    if gr.containsVertex(catalogo["RouteGraphDAirlines"] , route["Destination"]) ==False:
+        gr.insertVertex(catalogo["RouteGraphDAirlines"] , route["Destination"])
+    if gr.getEdge(catalogo["RouteGraphD"] , route["Departure"] , route["Destination"]) is None:
+        gr.addEdge(catalogo["RouteGraphD"], route["Departure"], route["Destination"] , float(route["distance_km"]))
+    gr.addEdge(catalogo["RouteGraphDAirlines"], route["Departure"], route["Destination"] , float(route["distance_km"]))
 
 
     """Agregar vertices a no dirigido"""
@@ -145,7 +156,7 @@ def addAirportsIATA(catalogo,Airport):
 
 
 def req_1(catalogo):
-    grafo= catalogo["RouteGraphD"]
+    grafo= catalogo["RouteGraphDAirlines"]
     lista=lt.newList("ARRAY_LIST")
     mapa=mp.newMap(numelements=gr.numVertices(grafo),
                                      maptype='PROBING',
@@ -153,13 +164,14 @@ def req_1(catalogo):
     for i in lt.iterator(gr.vertices(grafo)):
         adjacentes = gr.indegree(grafo,i)
         adjacentes1 = gr.outdegree(grafo,i)
-        mp.put(mapa,i,adjacentes + adjacentes1)
+
+        mp.put(mapa,i,adjacentes1+adjacentes)
     for j in lt.iterator(gr.vertices(grafo)):
         llave = mp.get(mapa,j)
         lt.addLast(lista,llave)
 
     lista = sa.sort(lista,adyacentes)
-    return lista
+    return lt.subList(lista,1,5)
 
 def req_2(catalogo ,IATA1,IATA2):
     kosajaru = scc.KosarajuSCC(catalogo['RouteGraphD'])

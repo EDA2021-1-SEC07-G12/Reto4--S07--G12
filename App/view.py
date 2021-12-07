@@ -68,17 +68,30 @@ while True:
         controller.loadData(catalog)
         controller.crearNoDirigido(catalog)
         print(gr.numEdges(catalog["RouteGraphNoD"]))
-        print("El numero de vertices del digrafo es " + str(gr.numVertices(catalog["RouteGraphD"])))
+        
+        print("*********************** Digrafo info ****************************")
         print("El numero de arcos del digrafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
-        print("El numero de vertices del grafo es " + str(gr.numVertices(catalog["RouteGraphNoD"])))
+        print("El numero de aeropuertos cargados es " + str(mp.size(catalog["MapAirportsIATA"])))
+
+        print("****************************** Grafo info **************************")
+        
         print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
-        print("El numero de Ciudades cargados es " + str(mp.size(catalog["City"])))
+        print("El numero de aeropuertos cargados es " + str(mp.size(catalog["MapAirportsIATA"])))
 
-        
+        print("Datos cargados correctamente")
     elif int(inputs[0]) == 2:
-        
-        print(controller.requerimiento1(catalog))
+       print("***************** Requerimiento 1 ****************************")
+       print("Numero de aeropuertos en la red " + str(mp.size(catalog["MapAirportsIATA"])))
+       print("Numero de aeropuertos conectados " + str(lt.size(gr.vertices(catalog["RouteGraphDAirlines"]))))
+       print("***************** Aeropuertos con más conexiones ****************************")
+       req = controller.requerimiento1(catalog)
 
+       for i in lt.iterator(req): 
+           
+           variable=mp.get(catalog["MapAirportsIATA"],i["key"])
+           variable1=variable["value"]
+           print({"Nombre ":variable1["Name"]," Ciudad ":variable1["City"], "País": variable1["Country"], "IATA":variable1["IATA"], "Conexiones":i["value"],"Salidas":gr.outdegree(catalog["RouteGraphDAirlines"],i["key"]), "Entradas":gr.indegree(catalog["RouteGraphDAirlines"],i["key"])})
+        #print(mp.keySet(catalog["MapAirportsIATA"]))
     elif int(inputs[0]) == 3:
         
         h= controller.requerimiento2(catalog)
