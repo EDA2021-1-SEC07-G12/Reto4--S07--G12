@@ -108,27 +108,23 @@ while True:
 
     elif int(inputs[0]) == 4:
 
-        """for i in lt.iterator(mp.keySet(catalog["City"])):
-            print(i)
+        
         Pais1=input("Introduce el indicativo del país al que corresponde la ciudad de salida: ")
         Ciudad1=input("Introduce el nombre de la ciudad de salida: ")
         Region1=input("Introduce el nombre de la región la cual la ciudad de salida pertenece")
         Pais2=input("Introduce el indicativo del país al que corresponde la ciudad de llegada: ")
         Ciudad2=input("Introduce el nombre de la ciudad de llegada: ")
         Region2=input("Introduce el nombre de la región la cual la ciudad de llegada pertenece: ")
-        Ciudad1 = Ciudad1+Pais1+Region1
-        Ciudad2=Ciudad2+Pais2+Region2"""
+        
         Ciudad1="Saint-RaymondCAQuebec"
         Ciudad2="MoosburgDEBavaria"
-       # print(mp.get(catalog["City"],"JiyekCNXinjiang"))
         h= controller.requerimiento3(catalog,Ciudad1,Ciudad2)
+        
         for i in lt.iterator(h):
             print(i)
         #for i in lt.iterator(h):
         
-        #stop_time = time.process_time()
-        #elapsed_time_mseg = (stop_time - start_time)*1000
-       # print(elapsed_time_mseg)
+        
 
         
     elif int(inputs[0]) == 6:
@@ -137,8 +133,8 @@ while True:
         print (h)
 
     elif int(inputs[0]) == 7:
-       # for i in lt.iterator(mp.keySet(catalog["MapAirports"])): 
-           # print(i)
+        for i in lt.iterator(mp.keySet(catalog["City"])): 
+            print(i)
         print("Hola")
 
     elif int(inputs[0]) == 8:

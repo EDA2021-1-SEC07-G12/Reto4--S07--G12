@@ -219,31 +219,32 @@ def req_3(catalogo, Ciudad1,Ciudad2):
 
     
 def req_4(catalogo,millas,inicio):
+    mapaCiudad=catalogo["City"]
+    ciudad1=mp.get(mapaCiudad,inicio)["value"]
+    tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
+    llave1= DiferenciaDistancia(catalogo,tupla1)
+    print(llave1)
+    IATA= lt.getElement(llave1,2)
     km=millas*1.6
-    grafo= catalogo["RouteGraphNoD"]
-    vertices=gr.vertices(grafo)
-    dijsktra = pr.PrimMST(grafo)
-
-
-    for i in lt.iterator(vertices):
-        print(djk.distTo(dijsktra,i))
-        #"print(djk.pathTo(dijsktra,))
-    #print(dijsktra)
-    """camino1=0
-    distancia=11111110
+    retorno=lt.newList("ARRAY_LIST")
+    dijsktra = djk.Dijkstra(catalogo["RouteGraphNoD"], IATA)
+    vertices = gr.vertices(catalogo["RouteGraphNoD"])
     distancia1=0
-    for i in lt.iterator(gr.vertices(grafo)):
-        if djk.hasPathTo(dijsktra, i):
-            camino= lt.size(djk.pathTo(dijsktra,i))
-            distancia= djk.distTo(dijsktra,i)
-            
-            if distancia<millas and camino>=camino1:
-                
-                camino1 = lt.size(djk.pathTo(dijsktra,i))
-                distancia1= djk.distTo(dijsktra,i)
-    print(distancia<km)
-    print(camino>=camino1)
-    return (distancia1, camino1)"""
+    rutaPos=0
+    camino="No hay camino"
+    for i in lt.iterator(vertices):
+        distancia= djk.distTo(dijsktra,i)
+        if distancia>distancia1 and distancia!=inf:
+            distancia1=distancia
+            camino=djk.pathTo(dijsktra,i)
+        if distancia!=inf:        
+            rutaPos+=1
+    lt.addLast(retorno,distancia1)
+    lt.addLast(retorno,IATA)
+    lt.addLast(retorno,rutaPos)
+    lt.addLast(retorno,camino)
+    return retorno
+    
 
 def req_5(catalogo,IATA):
     digrafo=catalogo["RouteGraphD"]
