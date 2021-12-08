@@ -184,18 +184,9 @@ def req_2(catalogo ,IATA1,IATA2):
     retorno=lt.newList("ARRAY_LIST")
     lt.addLast(retorno,strong)
     lt.addLast(retorno,conectados)
-    return (strong,conectados)
 
-    return conectados
-    #return scc.sccCount(catalogo["RouteGraphD"],kosajaru, IATA1 )
+    return retorno
 
-def connectedComponents(analyzer):
-    """
-    Calcula los componentes conectados del grafo
-    Se utiliza el algoritmo de Kosaraju
-    """
-    Variable=  scc.KosarajuSCC(analyzer['RouteGraphD'])
-    return scc.connectedComponents(Variable)
 
 def req_3(catalogo, Ciudad1,Ciudad2):
     """
@@ -223,6 +214,8 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     dijsktra=djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
     return djk.pathTo(dijsktra,IATA2)
+
+    
 def req_4(catalogo,millas,inicio):
     km=millas*1.6
     grafo= catalogo["RouteGraphNoD"]

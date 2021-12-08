@@ -93,9 +93,19 @@ while True:
            print({"Nombre ":variable1["Name"]," Ciudad ":variable1["City"], "País": variable1["Country"], "IATA":variable1["IATA"], "Conexiones":i["value"],"Salidas":gr.outdegree(catalog["RouteGraphDAirlines"],i["key"]), "Entradas":gr.indegree(catalog["RouteGraphDAirlines"],i["key"])})
         
     elif int(inputs[0]) == 3:
-        
-        h= controller.requerimiento2(catalog)
-        print (h)
+        IATA1=input("Introduce codigo IATA 1: ")
+        IATA2=input("Introduce codigo IATA 2: ")
+        h= controller.requerimiento2(catalog,IATA1,IATA2)
+        print("Hay {} SCC en el grafo.".format(lt.getElement(h,1)))
+        air1=mp.get(catalog["MapAirportsIATA"],IATA1)
+        air1=air1["value"]
+        air2=mp.get(catalog["MapAirportsIATA"],IATA2)
+        air2=air2["value"]
+        print({"Nombre ":air1["Name"]," Ciudad ":air1["City"], "País": air1["Country"], "IATA":air1["IATA"]})
+        print({"Nombre ":air2["Name"]," Ciudad ":air2["City"], "País": air2["Country"], "IATA":air2["IATA"]})
+        print("RESP: {}".format(lt.getElement(h,2)))
+
+
     elif int(inputs[0]) == 4:
         start_time = time.process_time()
         h= controller.requerimiento3(catalog)
@@ -104,6 +114,8 @@ while True:
         stop_time = time.process_time()
         elapsed_time_mseg = (stop_time - start_time)*1000
         print(elapsed_time_mseg)
+
+        
     elif int(inputs[0]) == 6:
         
         h= controller.req4(catalog)

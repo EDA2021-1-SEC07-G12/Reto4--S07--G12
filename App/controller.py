@@ -73,10 +73,7 @@ def crearNoDirigido(catalog):
 def requerimiento1(catalog):
     return model.req_1(catalog)
 
-def requerimiento2(catalog):
-    IATA1=input("Introduce codigo IATA 1: ")
-    IATA2=input("Introduce codigo IATA 2: ")
-     
+def requerimiento2(catalog,IATA1,IATA2):
     return model.req_2(catalog,IATA1,IATA2)
 
 def requerimiento3(catalog):
