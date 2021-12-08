@@ -204,16 +204,18 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     IATA1=lt.getElement(llave1,2)
     print(llave1)
     print(IATA1)
-    print(gr.containsVertex(catalogo["RouteGraphNoD"], IATA1))
-
+    print(llave1)
+    
     llave2=DiferenciaDistancia(catalogo,tupla2)
     
     IATA2=lt.getElement(llave2,2)
+    print(llave2)
+    dijsktra=  djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
+    
+    return  djk.pathTo(dijsktra, IATA2)
     
     
-    dijsktra=djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
-    return djk.pathTo(dijsktra,IATA2)
 
     
 def req_4(catalogo,millas,inicio):
