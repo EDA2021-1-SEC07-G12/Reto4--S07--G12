@@ -222,20 +222,18 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     retorno=lt.newList("ARRAY_LIST")
     llave1= DiferenciaDistancia(catalogo,tupla1)
     IATA1=lt.getElement(llave1,2)
-    print(llave1)
-    print(IATA1)
+    
     lt.addLast(retorno,llave1)
     
     llave2=DiferenciaDistancia(catalogo,tupla2)
     
     IATA2=lt.getElement(llave2,2)
-    print(llave2)
+    
     lt.addLast(retorno,llave2)
     dijsktra=  djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
     lt.addLast(retorno,djk.pathTo(dijsktra, IATA2))
-    distancia=TotalDistancia(djk.pathTo(dijsktra, IATA2))
-    lt.addLast(retorno,distancia)
+    
     return retorno
     
     
@@ -247,7 +245,7 @@ def req_4(catalogo,millas,inicio):
     ciudad1=mp.get(mapaCiudad,inicio)["value"]
     tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
     llave1= DiferenciaDistancia(catalogo,tupla1)
-    print(llave1)
+    
     IATA= lt.getElement(llave1,2)
     km=millas*1.6
     retorno=lt.newList("ARRAY_LIST")
@@ -255,18 +253,26 @@ def req_4(catalogo,millas,inicio):
     vertices = gr.vertices(catalogo["RouteGraphNoD"])
     distancia1=0
     rutaPos=0
+    contador=0
     camino="No hay camino"
     for i in lt.iterator(vertices):
         distancia= djk.distTo(dijsktra,i)
         if distancia>distancia1 and distancia!=inf:
             distancia1=distancia
             camino=djk.pathTo(dijsktra,i)
+            
+
+            
+        
         if distancia!=inf:        
             rutaPos+=1
-    lt.addLast(retorno,distancia1)
+    lt.addLast(retorno,round(distancia1,2))
     lt.addLast(retorno,IATA)
     lt.addLast(retorno,rutaPos)
     lt.addLast(retorno,camino)
+    lt.addLast(retorno,km)
+    lt.addLast(retorno,distancia1-km)
+    #lt.addLast(retorno,contador)
     return retorno
     
 
@@ -301,7 +307,7 @@ def DiferenciaDistancia(catalogo,tupla):
     lt.addLast(lista,Aeropuerto)
     lt.addLast(lista,IATA)
     lt.addLast(lista,valor1)
-    print(valor1)
+    
     return lista
 
 def DiferenciaDistancia1(lat1,lon1,lat2,lon2):
@@ -336,9 +342,3 @@ def adyacentes(elemento1,elemento2):
         return 1
     else:
         return 0
-
-def TotalDistancia(listas):
-    retorno=0
-    for i in lt.iterator(listas):
-        retorno+=float(i["weight"])
-    retorno

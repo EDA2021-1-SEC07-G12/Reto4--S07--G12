@@ -151,15 +151,7 @@ while True:
                 #string=Ciudad11["city_ascii"] + Ciudad11["iso2"]+ Ciudad11["admin_name"]
                 #print(string)
         
-        ''' Pais1=input("Introduce el indicativo del país al que corresponde la ciudad de salida: ")
-        Ciudad1=input("Introduce el nombre de la ciudad de salida: ")
-        Region1=input("Introduce el nombre de la región la cual la ciudad de salida pertenece")
-        Pais2=input("Introduce el indicativo del país al que corresponde la ciudad de llegada: ")
-        Ciudad2=input("Introduce el nombre de la ciudad de llegada: ")
-        Region2=input("Introduce el nombre de la región la cual la ciudad de llegada pertenece: ")'''
         
-        '''Ciudad1="Saint-RaymondCAQuebec"
-        Ciudad2="MoosburgDEBavaria"'''
         print(mp.get(catalog["City"],Ciudad1),mp.get(catalog["City"],Ciudad2))
         h= controller.requerimiento3(catalog,Ciudad1,Ciudad2)
         print(h)
@@ -171,23 +163,52 @@ while True:
         ciudadllegada= lt.getElement(h,2)
         Aer1=lt.getElement(ciudadllegada,1)
         print(Aer1)
+        contador=0
         print("La ruta entre las dos ciudades es: ")
         for i in lt.iterator(lt.getElement(h,3)):
             print(i)
-        
+            contador+=i["weight"]
+        print("Distancia total " + str(contador))
         
         #for i in lt.iterator(xd):
         #    print(i)
         # for i in lt.iterator(h):
             #print(i)
 
-    elif int(inputs[0]) == 6:
-        origen=input("Introduce ciudad de origen: ")
-        millas=int(input("Inserte cantidadde millas disponibles "))
-        h= controller.req4(catalog,millas,origen)
+    elif int(inputs[0]) == 5:
+        Ciudad1=input("Introduce el nombre de la ciudad de salida: ")
+        Ciudad11=mp.get(catalog["CityAux"],Ciudad1)
+        if lt.size(Ciudad11["value"])==1:
+            #Ciudad11=lt.getElement(Ciudad11["value"],1)
+            Ciudad11=Ciudad11["value"]
+            Ciudad11=lt.getElement(Ciudad11,1)
+            string=Ciudad11["city_ascii"] + Ciudad11["iso2"]+ Ciudad11["admin_name"]
+            Ciudad1=string
+        else:
+            Ciudad11=Ciudad11["value"]
+            Contador=1
+            
+            for i in lt.iterator(Ciudad11):
+                string=i["city"] + i["iso2"]+ i["admin_name"]
+                
+                print("Opción " + str(contador) + ": " +string)
+                contador+=1
+            
+            Ciudad1=input("Escribe una de las combinaciones anteriormente mostradas: ")
         
+        millas=int(input("Inserte cantidadde millas disponibles "))
+        h= controller.req4(catalog,millas,Ciudad1)
+        print("Distancia máxima a recorrer " + str(lt.getElement(h,1)))
+        
+        IATA= lt.getElement(h,2)
+        IATA=mp.get(catalog["MapAirportsIATA"],IATA)
+        print("Nombre del aeropuerto: " + str(IATA["value"]["Name"]))
+        print("Distancia disponible en km: " +str(lt.getElement(h,3)))
+        print("Camino más largo posible")
+        for i in lt.iterator(lt.getElement(h,4)):
+            print(i)
 
-    elif int(inputs[0]) == 7:
+    elif int(inputs[0]) == 6:
         for i in lt.iterator(mp.keySet(catalog["City"])): 
             print(i)
 
