@@ -77,7 +77,7 @@ while True:
         
         print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
         print("El numero de aeropuertos cargados es " + str(mp.size(catalog["MapAirportsIATA"])))
-
+        print(mp.size(catalog["City"]))
         print("Datos cargados correctamente")
     elif int(inputs[0]) == 2:
        print("***************** Requerimiento 1 ****************************")
@@ -108,28 +108,74 @@ while True:
 
     elif int(inputs[0]) == 4:
 
+        Ciudad1=input("Introduce el nombre de la ciudad de salida: ")
+        Ciudad11=mp.get(catalog["CityAux"],Ciudad1)
+        if lt.size(Ciudad11["value"])==1:
+            #Ciudad11=lt.getElement(Ciudad11["value"],1)
+            Ciudad11=Ciudad11["value"]
+            Ciudad11=lt.getElement(Ciudad11,1)
+            string=Ciudad11["city_ascii"] + Ciudad11["iso2"]+ Ciudad11["admin_name"]
+            Ciudad1=string
+        else:
+            Ciudad11=Ciudad11["value"]
+            Contador=1
+            
+            for i in lt.iterator(Ciudad11):
+                string=i["city"] + i["iso2"]+ i["admin_name"]
+                
+                print("Opción " + str(contador) + ": " +string)
+                contador+=1
+            
+            Ciudad1=input("Escribe una de las combinaciones anteriormente mostradas: ")
+
+
+        Ciudad2=input("Introduce el nombre de destino: ")
+        Ciudad22=mp.get(catalog["CityAux"],Ciudad2)
+        if lt.size(Ciudad22["value"])==1:
+            #Ciudad11=lt.getElement(Ciudad11["value"],1)
+            Ciudad22=Ciudad22["value"]
+            Ciudad22=lt.getElement(Ciudad22,1)
+            string=Ciudad22["city"] + Ciudad22["iso2"]+ Ciudad22["admin_name"]
+            Ciudad2=string
+        else:
+            Ciudad22=Ciudad22["value"]
+            Contador=1
+            
+            for i in lt.iterator(Ciudad22):
+                string=i["city_ascii"] + i["iso2"]+ i["admin_name"]
+                
+                print("Opción " + str(contador) + ": " +string)
+                contador+=1
+            
+            Ciudad2=input("Escribe una de las combinaciones anteriormente mostradas: ")
+                #string=Ciudad11["city_ascii"] + Ciudad11["iso2"]+ Ciudad11["admin_name"]
+                #print(string)
         
-        Pais1=input("Introduce el indicativo del país al que corresponde la ciudad de salida: ")
+        ''' Pais1=input("Introduce el indicativo del país al que corresponde la ciudad de salida: ")
         Ciudad1=input("Introduce el nombre de la ciudad de salida: ")
         Region1=input("Introduce el nombre de la región la cual la ciudad de salida pertenece")
         Pais2=input("Introduce el indicativo del país al que corresponde la ciudad de llegada: ")
         Ciudad2=input("Introduce el nombre de la ciudad de llegada: ")
-        Region2=input("Introduce el nombre de la región la cual la ciudad de llegada pertenece: ")
+        Region2=input("Introduce el nombre de la región la cual la ciudad de llegada pertenece: ")'''
         
-        Ciudad1="Saint-RaymondCAQuebec"
-        Ciudad2="MoosburgDEBavaria"
+        '''Ciudad1="Saint-RaymondCAQuebec"
+        Ciudad2="MoosburgDEBavaria"'''
+        print(mp.get(catalog["City"],Ciudad1),mp.get(catalog["City"],Ciudad2))
         h= controller.requerimiento3(catalog,Ciudad1,Ciudad2)
-        
+        print(h)
+        print("La ruta entre las dos ciudades es: ")
         for i in lt.iterator(h):
             print(i)
-        
+        #for i in lt.iterator(xd):
+        #    print(i)
+        # for i in lt.iterator(h):
+            #print(i)
 
     elif int(inputs[0]) == 6:
         origen=input("Introduce ciudad de origen: ")
         millas=int(input("Inserte cantidadde millas disponibles "))
         h= controller.req4(catalog,millas,origen)
-        print (h)
-
+        
 
     elif int(inputs[0]) == 7:
         for i in lt.iterator(mp.keySet(catalog["City"])): 
@@ -137,8 +183,8 @@ while True:
 
 
     elif int(inputs[0]) == 8:
-        iata=input("Inserte aeropuerto afectado ")
-        print(controller.req_5(catalog,iata))
+        for i in lt.iterator(mp.valueSet(catalog["CityAux"])): 
+            print(i)
     else:
         sys.exit(0)
 sys.exit(0)

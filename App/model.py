@@ -70,6 +70,9 @@ def newCatalog():
     catalogo['City'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
+    catalogo['CityAux'] = mp.newMap(numelements=3971,
+                                     maptype='PROBING',
+                                     comparefunction=None)
     catalogo['MapAirportsIATA'] = mp.newMap(numelements=3971,
                                      maptype='PROBING',
                                      comparefunction=None)
@@ -141,11 +144,25 @@ def addAirport(catalogo,Airport):
 def addCity(catalogo,City):
     mapa=catalogo["City"]
     
-    string=City["city_ascii"]+City["iso2"] + City["admin_name"]
+    string=City["city"]+City["iso2"] + City["admin_name"]
         
     
     mp.put(mapa, string, City)
     return catalogo
+def addCity1(catalogo,City):
+    
+    arbol=catalogo["CityAux"]
+    if mp.contains(arbol,City["city"])==False:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,City)
+        mp.put(arbol,City["city"], lista)
+    else:
+        lista1=mp.get(arbol,City["city"])
+        lista1=lista1["value"]
+        lt.addLast(lista1,City)
+
+    return catalogo
+    
 def addAirportsIATA(catalogo,Airport):
     mapa=catalogo["MapAirportsIATA"]
     mp.put(mapa, Airport["IATA"], Airport)
@@ -180,9 +197,12 @@ def req_2(catalogo ,IATA1,IATA2):
     strong = scc.connectedComponents(kosajaru)
 
     conectados=scc.stronglyConnected(kosajaru,IATA1,IATA2)
-
+    contador= strong
+    for i in lt.iterator(gr.vertices(catalogo['RouteGraphD'])):
+            if lt.size(gr.adjacentEdges(catalogo['RouteGraphD'],i))==0:
+                contador+=1
     retorno=lt.newList("ARRAY_LIST")
-    lt.addLast(retorno,strong)
+    lt.addLast(retorno,contador)
     lt.addLast(retorno,conectados)
 
     return retorno
@@ -199,20 +219,22 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     ciudad2=mp.get(mapaCiudad,Ciudad2)['value']
     tupla1 = (float(ciudad1["lat"]) , float(ciudad1["lng"]))
     tupla2=(float(ciudad2["lat"]) , float(ciudad2["lng"]))
-    
+    retorno=lt.newList("ARRAY_LIST")
     llave1= DiferenciaDistancia(catalogo,tupla1)
     IATA1=lt.getElement(llave1,2)
     print(llave1)
     print(IATA1)
-    print(llave1)
+    lt.addLast(retorno,llave1)
     
     llave2=DiferenciaDistancia(catalogo,tupla2)
     
     IATA2=lt.getElement(llave2,2)
     print(llave2)
+    lt.addLast(retorno,llave2)
     dijsktra=  djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
-    return  djk.pathTo(dijsktra, IATA2)
+    lt.addLast(retorno,djk.pathTo(dijsktra, IATA2))
+    return retorno
     
     
     
