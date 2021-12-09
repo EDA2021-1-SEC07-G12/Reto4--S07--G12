@@ -77,18 +77,14 @@ def requerimiento2(catalog,IATA1,IATA2):
     return model.req_2(catalog,IATA1,IATA2)
 
 def requerimiento3(catalog,origen,final):
-    
-     
     return model.req_3(catalog,origen,final)
 
-
-def req4(catalog):
-    origen=input("Introduce ciudad de origen: ")
-    millas=int(input("Inserte cantidadde millas disponibles "))
+def req4(catalog,millas,origen):
     return model.req_4(catalog,millas,origen)
-def req_5(catalog): 
-    iata=input("Inserte aeropuerto afectado ")
+
+def req_5(catalog,iata): 
     return model.req_5(catalog,iata)
+
 def connectedComponents(analyzer):
     """
     Numero de componentes fuertemente conectados

@@ -122,23 +122,23 @@ while True:
         
         for i in lt.iterator(h):
             print(i)
-        #for i in lt.iterator(h):
-        
         
 
-        
     elif int(inputs[0]) == 6:
-        
-        h= controller.req4(catalog)
+        origen=input("Introduce ciudad de origen: ")
+        millas=int(input("Inserte cantidadde millas disponibles "))
+        h= controller.req4(catalog,millas,origen)
         print (h)
+
 
     elif int(inputs[0]) == 7:
         for i in lt.iterator(mp.keySet(catalog["City"])): 
             print(i)
-        print("Hola")
+
 
     elif int(inputs[0]) == 8:
-           print(controller.req_5(catalog))
+        iata=input("Inserte aeropuerto afectado ")
+        print(controller.req_5(catalog,iata))
     else:
         sys.exit(0)
 sys.exit(0)
