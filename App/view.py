@@ -209,10 +209,32 @@ while True:
             print(i)
 
     elif int(inputs[0]) == 6:
-        for i in lt.iterator(mp.keySet(catalog["City"])): 
-            print(i)
+        IATA=input("Introduce código IATA del aeropuerto que dejó de funcionar: ")
+        h= controller.req_5(catalog,IATA)
+        print("********************************** Info inicial ******************************** ")
+        print("*********************** Digrafo info ****************************")
+        print("El numero de arcos del digrafo es " + str(gr.numEdges(catalog["RouteGraphD"])))
+        print("El numero de aeropuertos cargados es " + str(mp.size(catalog["MapAirportsIATA"])))
 
+        print("****************************** Grafo info **************************")
+        
+        print("El numero de arcos del grafo es " + str(gr.numEdges(catalog["RouteGraphNoD"])))
+        print("El numero de aeropuertos cargados es " + str(mp.size(catalog["MapAirportsIATA"])))
+        
+        print("*******************Digrafo*************************")
+        print("Numero de rutas enlazadas al aeropuerto " + str(lt.getElement(h,1)))
+        print("Numero de rutas enlazadas despues de la suspención del aeropuerto " + str(lt.getElement(h,3)))
 
+        print("*******************Grafo*************************")
+        print("Numero de rutas enlazadas al aeropuerto " + str(lt.getElement(h,2)))
+        print("Numero de rutas enlazadas despues de la suspención del aeropuerto " + str(lt.getElement(h,4)))
+        print("Numero de aeropuertos despues de la suspención " + str(lt.getElement(h,5)))
+        print("3 Primeros y 3 ultimos aeropuertos afectados")
+
+        for i in lt.iterator(lt.getElement(h,6)):
+            print(mp.get(catalog["MapAirportsIATA"],i)["value"])
+        for i in lt.iterator(lt.getElement(h,7)):
+                print(mp.get(catalog["MapAirportsIATA"],i)["value"])   
     elif int(inputs[0]) == 8:
         for i in lt.iterator(mp.valueSet(catalog["CityAux"])): 
             print(i)

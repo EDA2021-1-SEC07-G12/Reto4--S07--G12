@@ -39,7 +39,7 @@ def loadData(catalog):
     LoadCity(catalog)
     LoadAirports(catalog)
 def loadRoutes(catalog):
-    airportFile = cf.data_dir + 'routes-utf8-large.csv'
+    airportFile = cf.data_dir + 'routes-utf8-small.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
         
@@ -55,7 +55,7 @@ def LoadCity(catalog):
         model.addCity1(catalog,City)
 def LoadAirports(catalog):
 
-    airportFile = cf.data_dir + 'airports-utf8-large.csv'
+    airportFile = cf.data_dir + 'airports-utf8-small.csv'
     input_file = csv.DictReader(open(airportFile, encoding='utf-8'))
     for Airport in input_file:
         

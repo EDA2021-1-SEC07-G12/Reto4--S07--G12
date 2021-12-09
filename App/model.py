@@ -279,15 +279,24 @@ def req_4(catalogo,millas,inicio):
 def req_5(catalogo,IATA):
     digrafo=catalogo["RouteGraphD"]
     grafo=catalogo["RouteGraphNoD"]
-    print(lt.size(gr.adjacents(catalogo["RouteGraphD"], IATA)))
+    retorno=lt.newList("ARRAY_LIST")
     numRoutes= gr.outdegree(digrafo,IATA) + gr.indegree(digrafo,IATA)
-    numRoutes1=gr.degree(grafo,IATA) 
+    numRoutes1=gr.degree(grafo,IATA)
+    lt.addLast(retorno,numRoutes)
+    lt.addLast(retorno,numRoutes1)
     arcos= gr.numEdges(digrafo) - numRoutes
     arcos1=gr.numEdges(grafo)-numRoutes1
-    return arcos1
-    #print((gr.numVertices(catalogo["RouteGraphNoD"], gr.numEdges(catalogo["RouteGraphNoD"]))))
-# Funciones utilizadas para comparar elementos dentro de una lista
-
+    lt.addLast(retorno,arcos)
+    lt.addLast(retorno,arcos1)
+    lt.addLast(retorno,mp.size(catalogo["MapAirportsIATA"])-1)
+    adjacentes=gr.adjacents(catalogo["RouteGraphD"],IATA)
+    primeros3=lt.subList(adjacentes,1,3)
+    ultimos3=lt.subList(adjacentes,lt.size(adjacentes)-3,3)
+    lt.addLast(retorno,primeros3)
+    lt.addLast(retorno,ultimos3)
+    
+    return retorno
+    
 
 def DiferenciaDistancia(catalogo,tupla):
     mapa=catalogo["MapAirports"]
