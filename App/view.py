@@ -163,9 +163,19 @@ while True:
         print(mp.get(catalog["City"],Ciudad1),mp.get(catalog["City"],Ciudad2))
         h= controller.requerimiento3(catalog,Ciudad1,Ciudad2)
         print(h)
+        print("Aeropuerto de salida ")
+        ciudadllegada= lt.getElement(h,1)
+        Aer1=lt.getElement(ciudadllegada,1)
+        print(Aer1)
+        print("Aeropuerto de llegada ")
+        ciudadllegada= lt.getElement(h,2)
+        Aer1=lt.getElement(ciudadllegada,1)
+        print(Aer1)
         print("La ruta entre las dos ciudades es: ")
-        for i in lt.iterator(h):
+        for i in lt.iterator(lt.getElement(h,3)):
             print(i)
+        
+        
         #for i in lt.iterator(xd):
         #    print(i)
         # for i in lt.iterator(h):

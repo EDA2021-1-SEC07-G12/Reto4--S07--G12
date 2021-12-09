@@ -234,6 +234,8 @@ def req_3(catalogo, Ciudad1,Ciudad2):
     dijsktra=  djk.Dijkstra(catalogo["RouteGraphNoD"], IATA1)
     
     lt.addLast(retorno,djk.pathTo(dijsktra, IATA2))
+    distancia=TotalDistancia(djk.pathTo(dijsktra, IATA2))
+    lt.addLast(retorno,distancia)
     return retorno
     
     
@@ -298,6 +300,8 @@ def DiferenciaDistancia(catalogo,tupla):
     print(Aeropuerto)
     lt.addLast(lista,Aeropuerto)
     lt.addLast(lista,IATA)
+    lt.addLast(lista,valor1)
+    print(valor1)
     return lista
 
 def DiferenciaDistancia1(lat1,lon1,lat2,lon2):
@@ -332,3 +336,9 @@ def adyacentes(elemento1,elemento2):
         return 1
     else:
         return 0
+
+def TotalDistancia(listas):
+    retorno=0
+    for i in lt.iterator(listas):
+        retorno+=float(i["weight"])
+    retorno
